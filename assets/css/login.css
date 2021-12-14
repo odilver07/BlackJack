@@ -1,0 +1,17 @@
+html{
+    box-sizing: border-box;
+    font-size: 62.5%; /*1rem = 10px*/
+}
+*, *:before, *:after{
+    box-sizing: inherit;
+}
+img{
+    max-width: 100%;
+    display: block;
+}
+body {
+    background-color:  #00390b;
+}
+.contenedor{
+    
+}

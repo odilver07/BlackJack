@@ -1,10 +1,22 @@
 .carta {
     position: relative;
-    width: 150px;
-    left: 100px;
-    margin-left: -75px;
+    width: 75px;
+    left: 50px;
+    margin-left: -35px;
 }
 
 #computadora-cartas, #jugador-cartas{
-    height: 250px;
+    height: 200px;
+}
+
+h2 {
+    text-align: center;
+    color: aliceblue;
+}
+
+.img-top{
+    width: 2em;
+}
+.botones-player{
+    margin-top: -5rem;
 }

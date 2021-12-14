@@ -9,9 +9,19 @@
     const puntuajeJugador = document.querySelectorAll('small');
     const divJuadorCartas = document.querySelector('#jugador-cartas');
     const divPcCartas = document.querySelector('#computadora-cartas');
+    const score = document.querySelector('#score-player');
+    let scoreJugador = 0;
     let puntosJugador = 0,
         puntosPc = 0;
-    console.log(btnPedir);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        let v = localStorage.getItem('score');
+        console.log(v);
+        if(v){
+            scoreJugador = v;
+            score.innerText = scoreJugador;
+        }
+    })
     
     const crearBaraja = () => {
         for(let i = 2; i <= 10; i++){
@@ -19,18 +29,31 @@
                 dec.push(i+tipo);
             }
         }
-    
         for(let tipo of tipos){
             for(let esp of especial){
                 dec.push(esp+tipo);
             }
         }
-    
-        dec = _.shuffle(dec);
-        // console.log(dec);
-    
+        dec = shuffle(dec);
         return dec;
     }
+    function shuffle(array) {
+        let currentIndex = array.length,  randomIndex;
+      
+        // While there remain elements to shuffle...
+        while (currentIndex != 0) {
+      
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+      
+          // And swap it with the current element.
+          [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+        }
+      
+        return array;
+      }
     
     crearBaraja();
      
@@ -54,15 +77,37 @@
             const carta = pedirCarta();
             puntosPc+= valorCarta(carta);
             puntuajeJugador[1].innerText = puntosPc;
-            console.log(puntosPc);
+            // console.log(puntosPc);
             const imgCarta = document.createElement('img');
             imgCarta.src = `assets/cartas/${carta}.png`;
             imgCarta.classList.add('carta')
             divPcCartas.append(imgCarta)
         }while(puntosMinimos <=21 && puntosPc <=21 && puntosPc-puntosJugador <= 0);
+        
+        if(puntosJugador > 21){
+            scoreJugador = 0;
+        }else if(puntosJugador == 21 && puntosPc != 21){
+            scoreJugador++;
+        }else if( puntosJugador < 21 && puntosPc < 21){
+            if((21-puntosJugador) < (21-puntosPc)){
+                scoreJugador++;
+            }else{
+                scoreJugador = 0;
+            }
+        }else if(puntosJugador < 21 && puntosPc > 21){
+            scoreJugador++;
+        }else if(puntosJugador < 21 && puntosPc  == 21){
+            scoreJugador = 0;
+        }
+        
+        score.innerText = scoreJugador;
+        console.log(scoreJugador);
     }
-    
-    // console.log(valorCarta(pedirCarta()));
+
+    function verificarPuesto(score) { 
+        window.location.href = "top-v.php?score=" + score; 
+      }
+      
     
     //Eventos
     btnPedir.addEventListener('click', () => {
@@ -94,6 +139,10 @@
     })
     
     btnNuevo.addEventListener('click', () => {
+        localStorage.setItem('score',scoreJugador);
+        if(scoreJugador != 0 ){
+            verificarPuesto(scoreJugador);
+        }
         dec = [];
         crearBaraja();
     
@@ -110,4 +159,3 @@
         puntuajeJugador[1].innerText = 0;
     })
 })();
-
